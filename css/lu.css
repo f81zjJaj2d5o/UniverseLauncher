@@ -323,7 +323,7 @@ ul.nav>li:not(:last-child){
 	padding-left: 26px;
 }
 
-@media screen and (max-device-width : 1080px){ /*make text invisible*/
+@media screen and (max-device-width : 1080px){ /*make text invisible and optimizes backpack*/
     .menu{
 		width: 60px;
 		white-space: nowrap;
@@ -350,6 +350,41 @@ ul.nav>li:not(:last-child){
     #menusizer{
         display: none;
     }
+    
+    /*backpack*/
+    #options, #BackPackWrapper{
+        position: relative !important;
+        width:100% !important;
+        right: 0px !important;
+        bottom:0px !important;
+    }
+    
+    #backpackOptions, #itemwindow, #addItemBox{
+        float:none !important;
+        width:100% !important;
+        margin-right: 40px !important;
+    }
+    
+    #backpackOptions, #backpackOptionsPlaceholder{
+        height: 65px !important;
+        background-color: black;
+        margin-bottom: 10px;
+    }
+    
+    #backpackOptionsPlaceholder{
+        width: 0px !important;
+    }
+    
+    #itemwindow{
+        box-sizing: border-box;
+    }
+    
+    #AddItemBox{
+        float:none !important;
+        box-sizing: border-box;
+        width:100% !important;
+    }
+    
 }
 
 .img-button:before, .char-button:before{
@@ -503,12 +538,30 @@ input[type="submit"], button[type="submit"]{
 	height: 2em;
 }
 
+input[type="button"]{
+	background-color: #5AF;
+	border: 2px solid #5AF;
+    /*float: right;*/
+	box-sizing: border-box;
+}
+
+input[type="button"].closebutton {
+	background-color: #CC0000;
+    border: 2px solid #CC0000;
+	color: #fff;
+}
+
+
 .wrapper input[type="submit"]{
 	/*height: 60px;*/
 	height: 1.5em;
 }
 
 input[type="submit"]:hover, button[type="submit"]:hover{
+	border: 2px solid #000;
+}
+
+input[type="button"]:hover{
 	border: 2px solid #000;
 }
 
@@ -633,7 +686,7 @@ table.th-right th{
 	min-width: 221px;
 }
 
-.tb-input td>input[type="checkbox"] + label:before, .tb-input td>select{
+.tb-input td>,,, + label:before, .tb-input td>select{
 	display: block;
 }
 
@@ -667,3 +720,18 @@ table.th-right th{
 	overflow: hidden;
 	max-height: 100%;
 }
+
+.draggable-item{
+    cursor: move;
+}
+
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
