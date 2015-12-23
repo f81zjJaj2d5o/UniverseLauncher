@@ -37,7 +37,7 @@ include "menu.php";
             else include('views/404.php');
 			break;
 		case 'char':
-			if (isset($_SESSION["rank"]) && $_SESSION["rank"] >= charRank) include('views/char.php');
+			if (isset($_SESSION["rank"]) && $_SESSION["rank"] >= characterRank) include('views/char.php');
             else include('views/404.php');
 			break;
 		case 'mail':
