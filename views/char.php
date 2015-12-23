@@ -29,6 +29,9 @@ if (isset($_POST['action'])){
 		<h1 style="margin: 0;"><?php echo $name . " "; if ($uname != "") echo "(" . $uname . ") "?></h1>
 		<h3>[ObjectID: <?php echo $objid; ?>]</h3>
 		<br/>
+    <script>
+        var playerPosition = [<?php echo $obj->x . "," . $obj->y . "," . $obj->z; ?>]
+    </script>
 		<span>Zone: <?php echo $obj->lastZoneId; ?>, Instance: <?php echo $obj->mapInstance; ?>, Clone: <?php echo $obj->mapClone; ?>, Position: (<?php echo $obj->x . "|" . $obj->y . "|" . $obj->z; ?>)</span><br/>
 		<span style="font-size: 9pt; color: #B00;">This position is only updated on world change at the moment</span>
 <?php
@@ -43,7 +46,31 @@ if (isset($_POST['action'])){
 ?>
 		</div>
 
-<div id="options" style="width:370px; position:absolute; right:0px; bottom:0px;"><img src="img/Backpack.png" onclick="hideShowBackpack()"><img src="img/controls-comingsoon.png" onclick="javascript:window.alert('coming soon.')"></div>
+<div id="positionMap" class="box pane" style=""> 
+        Map with approximate position:
+        <canvas id="worldPosition" width="100%" height="100%" style="width:100%; height:100%;">
+        </canvas> 
+    </div>
+    <div style="background-image: url(img/equippedgear/bg.png); height:256px; width:256px;">
+        <div>Equipped Gear</div>
+        <?php
+        for ($x = 1; $x <= 6; $x++) {
+            echo "
+            <div style='background-image: url(img/equippedgear/0.png); width:60px;'>
+                <img src='img/equippedgear/". $x .".png' draggable='true' class='draggable-item' id='17' height='60' width='60'>
+                ";
+        }
+            ?>
+            </div>
+    </div>
+
+<div id="options" style="width:370px; position:absolute; right:0px; bottom:0px;">
+    <?php
+        for ($x = 1; $x <= 6; $x++) {
+            echo "<img src='img/dock/". $x .".png' onclick='dockOptions(". $x .")' style='width:15%; max-width:100px;'>";
+        } 
+    ?>
+    <!--img src="img/Backpack.png" onclick="hideShowBackpack()"><img src="img/controls-comingsoon.png" onclick="javascript:window.alert('coming soon.')"></div-->
 
 
 <div id="BackPackWrapper" style="width:370px; position: absolute; right: 40px; bottom: 60px; height: 525px; visibility:<?php 
@@ -54,8 +81,7 @@ if (isset($_POST['backpackVisibility'])){
     }
 }
 echo $backpackVisibility;?>
-;">
-    
+;">    
 <div id="backpackOptions" style="float:left; width:60px; height:500px; border-radius:20px;"><div id="backpackOptionsPlaceholder" style="width:100%; height:363px; float: left;"><img src="img/back.png" id="backpackBackButton" onclick="hideShowBackpack()" style="visibility:hidden;"></div><img src="img/trash.png" width="60px" height="60px" style="visibility:hidden; border-radius:10px; margin-top:1px; margin-bottom:1px; margin-right:2px; margin-left:2px; float:right;" id="trashicon" class="droptarget-item"></img></div>
 <div id="itemwindow" style="background-color:black; width:260px; border-radius: 20px; padding: 20px; float:right;"><div><div style="width:100%; text-align:center; color:white; ">Items</div>
     
@@ -93,6 +119,18 @@ if (mysqli_num_rows($res) > 0) {
 </div>
 </div>
 <script>
+    function dockOptions(nr){
+        switch(nr) {
+    case 0:
+        /*todo*/
+        break;
+    case 1:
+        hideShowBackpack();
+        break;
+    default:
+        window.alert('coming soon.')
+}
+    }
     
     var backpackState = "<?php echo $backpackVisibility;?>";
     if(backpackState=="visible"){
@@ -101,7 +139,7 @@ if (mysqli_num_rows($res) > 0) {
                 document.getElementById('characterInfoBox').style.visibility="hidden";
                 document.getElementById('options').style.height="0px";
                 document.getElementById('options').style.visibility="hidden";
-                document.getElementById('options').style.visibility="hidden";
+                document.getElementById('positionMap').style.visibility="hidden";
         }
     }
 
@@ -115,6 +153,11 @@ if (mysqli_num_rows($res) > 0) {
             document.getElementById('options').style.height="80px";
             document.getElementById('options').style.visibility="visible";
             document.getElementById('backpackBackButton').style.visibility="hidden";
+            document.getElementById('positionMap').style.visibility="visible";
+            if(screen.width <= 1080){document.getElementById('positionMap').style.position="relative";}else{
+                document.getElementById('positionMap').style.position="absolute";
+            }
+            
         }else{
             if(screen.width <= 1080){
                 document.getElementById('characterInfoBox').style.position="absolute";
@@ -122,6 +165,8 @@ if (mysqli_num_rows($res) > 0) {
                 document.getElementById('options').style.height="0px";
                 document.getElementById('options').style.visibility="hidden";
                 document.getElementById('backpackBackButton').style.visibility="visible";
+                document.getElementById('positionMap').style.visibility="hidden";
+                document.getElementById('positionMap').style.position="absolute";
             }
             document.getElementById('BackPackWrapper').style.visibility='visible';
             backpackState = "visible";
@@ -279,4 +324,20 @@ if (mysqli_num_rows($res) > 0) {
                 document.body.appendChild(form);
                 form.submit();
                 }
-        </script>
+    
+    //painting worldPosition
+    var wP = document.getElementById("worldPosition");
+    
+    var worldImage=new Image();
+    worldImage.src="img/worlds/1100.png";
+    wP.width=worldImage.width;//1792;
+    wP.height=worldImage.height;//1280;
+    var wPcontent = wP.getContext("2d");
+    
+    wPcontent.drawImage(worldImage,0,0);
+    
+    var pointerImage=new Image();
+    pointerImage.src="img/positionPointer.png";
+    wPcontent.drawImage(pointerImage,(0.5*wP.width-(playerPosition[0]))-(pointerImage.width/2),(0.5*wP.height-(playerPosition[2]))-(pointerImage.width/2));
+    //wPcontent.drawImage(pointerImage,0.5*wP.width,0.5*wP.height); //==middle
+</script>

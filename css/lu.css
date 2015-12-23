@@ -323,7 +323,15 @@ ul.nav>li:not(:last-child){
 	padding-left: 26px;
 }
 
-@media screen and (max-device-width : 1080px){ /*make text invisible and optimizes backpack*/
+#positionMap{
+    position:fixed;
+    width:18%;
+    min-width:250px;
+    right:0px;
+    top:0px;
+}
+
+@media screen and (max-device-width : 1080px){ /*make text invisible, optimize backpack and reorganize screen*/
     .menu{
 		width: 60px;
 		white-space: nowrap;
@@ -385,6 +393,12 @@ ul.nav>li:not(:last-child){
         width:100% !important;
     }
     
+    /*positionMap*/
+    #positionMap{
+        position: relative;
+        width:initial;
+        min-width:0px;
+    }
 }
 
 .img-button:before, .char-button:before{
@@ -413,6 +427,7 @@ ul.nav>li:not(:last-child){
 .sessions-button:before{ background-image: url('../img/menu/health.png');}
 .admin-button:before{ background-image: url('../img/menu/gear.png');}
 .instances-button:before{ background-image: url('../img/menu/box.png');}
+.featureaccess-button:before{ background-image: url('../img/menu/access.png');}
 
 #menusizer{
     text-indent: 0%;
