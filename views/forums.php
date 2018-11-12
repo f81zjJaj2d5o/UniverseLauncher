@@ -15,7 +15,8 @@ require_once('libraries/forums.php');
 				$min_rank = 0;
 			}
 		}
-		$sql = "INSERT INTO topics (name, min_rank) VALUES ('" . $mysql->real_escape_string($_POST['title']) . "', '" . $min_rank . "')";
+		$sql = "
+		INTO topics (name, min_rank) VALUES ('" . $mysql->real_escape_string(strip_tags($_POST['title'])) . "', '" . $min_rank . "')";
 		
 		$mysql->query($sql);
 		$topic_id = $mysql->insert_id; 
@@ -34,7 +35,7 @@ require_once('libraries/forums.php');
 				$name = $_SESSION['user_name'];
 				
 				if (isset($_POST['text']) && $_POST['text'] != "" && isset($_POST['submit']) && ($_POST['submit'] == 'Submit Reply' || $_POST['submit'] == 'Submit Topic')){
-					$sql = "INSERT INTO mails (subject, text, sender, recipient_id) VALUES ('Re: " . $obj3->name . "', '" . $mysql->real_escape_string($_POST['text']) . "', '" . $name . "', '" . $topic_id . "')";
+					$sql = "INSERT INTO mails (subject, text, sender, recipient_id) VALUES ('Re: " . $obj3->name . "', '" . $mysql->real_escape_string(strip_tags($_POST['text'])) . "', '" . $name . "', '" . $topic_id . "')";
 					$mysql->query($sql);
 				}
 ?>
